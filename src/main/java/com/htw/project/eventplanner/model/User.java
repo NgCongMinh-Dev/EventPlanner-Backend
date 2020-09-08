@@ -3,11 +3,16 @@ package com.htw.project.eventplanner.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
+    public enum Role {
+        ADMIN, USER;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     private String username;
@@ -15,6 +20,8 @@ public class User {
     private String firstName;
 
     private String lastName;
+
+    private Role role;
 
     public Long getId() {
         return id;
@@ -42,5 +49,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

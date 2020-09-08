@@ -4,16 +4,18 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "events")
+@Table(name = "event")
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     private String name;
 
-    @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL,
+    @OneToMany(
+            mappedBy = "event", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Task> tasks;
 
