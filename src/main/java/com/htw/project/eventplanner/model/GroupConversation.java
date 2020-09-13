@@ -1,13 +1,14 @@
 package com.htw.project.eventplanner.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.htw.project.eventplanner.model.converter.IdOnlyConverter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "group_conversation")
-public class GroupConversation {
+public class GroupConversation implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,15 +16,19 @@ public class GroupConversation {
 
     private String title;
 
-    @OneToMany(
-            targetEntity = User.class, cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "gc_participant",
+            joinColumns = @JoinColumn(name = "gc_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> participants;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonSerialize(converter = IdOnlyConverter.class)
     @OneToOne(cascade = CascadeType.ALL)
     private Event event;
 
+    @Override
     public Long getId() {
         return id;
     }

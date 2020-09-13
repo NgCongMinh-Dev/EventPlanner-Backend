@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "event")
-public class Event {
+public class Event implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +19,13 @@ public class Event {
             fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Task> tasks;
 
+    @Override
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

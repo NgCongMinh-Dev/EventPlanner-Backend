@@ -21,9 +21,22 @@ public class TaskController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Task> createTask(@RequestBody Task t) {
-        Task task = business.saveTask(t);
+    public ResponseEntity<Task> createTask(@RequestParam("event") Long eventId, @RequestBody Task t) {
+        Task task = business.saveTask(eventId, t);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
+    }
+
+    @GetMapping(
+            path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Task> getTask(@PathVariable("id") Long id) {
+        Optional<Task> task = business.getTaskById(id);
+        if (task.isEmpty() || id != task.get().getId()) {
+            // error
+        }
+
+        return ResponseEntity.ok(task.get());
     }
 
     @PutMapping(
@@ -37,7 +50,7 @@ public class TaskController {
             // error
         }
 
-        Task updatedTask = business.saveTask(task);
+        Task updatedTask = business.updateTask(task);
         return ResponseEntity.ok(updatedTask);
     }
 

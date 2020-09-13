@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Identifiable {
 
     public enum Role {
         ADMIN, USER;
@@ -21,8 +21,9 @@ public class User {
 
     private String lastName;
 
-    private Role role;
+    private Role role = Role.USER;
 
+    @Override
     public Long getId() {
         return id;
     }

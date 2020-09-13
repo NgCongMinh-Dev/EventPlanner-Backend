@@ -1,5 +1,6 @@
 package com.htw.project.eventplanner.business;
 
+import com.htw.project.eventplanner.model.Event;
 import com.htw.project.eventplanner.model.Task;
 import com.htw.project.eventplanner.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +12,31 @@ import java.util.Optional;
 public class TaskBusiness {
 
     @Autowired
-    private TaskRepository repository;
+    private TaskRepository taskRepository;
 
-    public Task saveTask(Task task) {
-        return repository.save(task);
+    @Autowired
+    private EventBusiness eventBusiness;
+
+    public Task saveTask(Long eventId, Task task) {
+        Event event = eventBusiness.getEvent(eventId);
+        if (event == null) {
+            // TODO error
+        }
+
+        task.setEvent(event);
+        return taskRepository.save(task);
+    }
+
+    public Task updateTask(Task task) {
+        return taskRepository.save(task);
     }
 
     public void deleteTask(Task task) {
-        repository.delete(task);
+        taskRepository.delete(task);
     }
 
-    public Optional<Task> getTaskById(Long id){
-        return repository.findById(id);
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
     }
 
 }
