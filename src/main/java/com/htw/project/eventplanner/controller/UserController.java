@@ -2,8 +2,9 @@ package com.htw.project.eventplanner.controller;
 
 import com.htw.project.eventplanner.business.UserBusiness;
 import com.htw.project.eventplanner.model.User;
+import com.htw.project.eventplanner.model.exception.InvalidArgumentException;
+import com.htw.project.eventplanner.model.exception.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -21,10 +22,9 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addUser(@RequestParam("groupChat") Long gcId, @NonNull @RequestBody User user) {
-        business.joinGroupConversation(gcId, user);
-
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity addUser(@RequestParam("groupChat") Long gcId, @NonNull @RequestBody User user) throws InvalidIdException, InvalidArgumentException {
+        User dbUser = business.joinGroupConversation(gcId, user);
+        return ResponseEntity.ok(dbUser);
     }
 
 }

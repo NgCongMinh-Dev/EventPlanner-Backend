@@ -2,6 +2,7 @@ package com.htw.project.eventplanner.controller;
 
 import com.htw.project.eventplanner.business.EventBusiness;
 import com.htw.project.eventplanner.model.Event;
+import com.htw.project.eventplanner.model.exception.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,15 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
     private EventBusiness business;
+
+    @Autowired
+    public EventController(EventBusiness business) {
+        this.business = business;
+    }
 
     @PostMapping(
             path = "/new",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Event> createEvent(@RequestParam("groupChat") Long gcId, @RequestBody Event event) {
+    public ResponseEntity<Event> createEvent(@RequestParam("groupChat") Long gcId, @RequestBody Event event) throws InvalidIdException {
         Event dbEvent = business.createEvent(gcId, event);
         return new ResponseEntity<>(dbEvent, HttpStatus.CREATED);
     }
@@ -29,7 +34,7 @@ public class EventController {
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Event> getEvents(@PathVariable("id") Long id) {
+    public ResponseEntity<Event> getEvents(@PathVariable("id") Long id) throws InvalidIdException {
         Event event = business.getEvent(id);
         return ResponseEntity.ok(event);
     }

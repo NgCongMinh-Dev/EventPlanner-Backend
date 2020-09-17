@@ -2,11 +2,10 @@ package com.htw.project.eventplanner.business;
 
 import com.htw.project.eventplanner.model.Event;
 import com.htw.project.eventplanner.model.Task;
+import com.htw.project.eventplanner.model.exception.InvalidIdException;
 import com.htw.project.eventplanner.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class TaskBusiness {
@@ -17,17 +16,22 @@ public class TaskBusiness {
     @Autowired
     private EventBusiness eventBusiness;
 
-    public Task saveTask(Long eventId, Task task) {
+    public Task saveTask(Long eventId, Task task) throws InvalidIdException {
         Event event = eventBusiness.getEvent(eventId);
-        if (event == null) {
-            // TODO error
-        }
-
         task.setEvent(event);
         return taskRepository.save(task);
     }
 
-    public Task updateTask(Task task) {
+    public Task updateTask(Task oldTask, Task newTask) {
+        oldTask.setTitle(newTask.getTitle());
+        oldTask.setDescription(newTask.getDescription());
+        oldTask.setAssignees(newTask.getAssignees());
+        oldTask.setDueDate(newTask.getDueDate());
+
+        return taskRepository.save(oldTask);
+    }
+
+    public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
 
@@ -35,8 +39,10 @@ public class TaskBusiness {
         taskRepository.delete(task);
     }
 
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
+    public Task getTaskById(Long id) throws InvalidIdException {
+        return taskRepository
+                .findById(id)
+                .orElseThrow(() -> new InvalidIdException("Invalid task id."));
     }
 
 }

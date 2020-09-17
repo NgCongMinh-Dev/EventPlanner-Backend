@@ -2,11 +2,11 @@ package com.htw.project.eventplanner.business;
 
 import com.htw.project.eventplanner.model.GroupConversation;
 import com.htw.project.eventplanner.model.User;
+import com.htw.project.eventplanner.model.exception.InvalidArgumentException;
+import com.htw.project.eventplanner.model.exception.InvalidIdException;
 import com.htw.project.eventplanner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserBusiness {
@@ -21,29 +21,13 @@ public class UserBusiness {
         this.gcBusiness = gcBusiness;
     }
 
-    public User saveUser(User user) {
-        return repository.save(user);
-    }
-
-    public Optional<User> getUserById(Long id) {
-        return repository.findById(id);
-    }
-
-    public void joinGroupConversation(Long gcId, User user) {
+    public User joinGroupConversation(Long gcId, User user) throws InvalidIdException, InvalidArgumentException {
         GroupConversation gc = gcBusiness.getById(gcId);
-        if (gc == null) {
-            // TODO error
-        }
 
-        User filteredUser = gc.getParticipants().stream().
+        return gc.getParticipants().stream().
                 filter(u -> user.getUsername().equalsIgnoreCase(u.getUsername()))
-                .findAny().orElse(null);
-
-        if (filteredUser == null) {
-            User dbUser = saveUser(user);
-            gc.getParticipants().add(dbUser);
-            gcBusiness.save(gc);
-        }
+                .findAny()
+                .orElseThrow(() -> new InvalidArgumentException("Invalid username."));
     }
 
 }

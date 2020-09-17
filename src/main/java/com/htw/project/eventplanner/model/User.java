@@ -15,6 +15,7 @@ public class User implements Identifiable {
     @Column(name = "id")
     private Long id;
 
+    @Column(unique = true)
     private String username;
 
     private String firstName;
