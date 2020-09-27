@@ -17,6 +17,9 @@ insert into task (id, description, due_date, status, title, event_id) values (2,
 insert into task (id, description, due_date, status, title, event_id) values (3, 'Messer, Gabel', '2020-09-22 00:00:00.000000', 1, 'Besteck holen', 1);
 insert into task (id, description, due_date, status, title, event_id) values (4, '', '2020-09-26 00:00:00.000000', 1, 'Decke mitbringen', 1);
 insert into task (id, description, due_date, status, title, event_id) values (5, 'Wasser, Softdrinks', '2020-09-20 00:00:00.000000', 0, 'Getraenke kaufen', 1);
+insert into task (id, description, due_date, status, title, event_id) values (6, '', '2020-09-24 00:00:00.000000', 0, 'Eis kaufen', 1);
+insert into task (id, description, due_date, status, title, event_id) values (7, 'Fussball, Karten', '2020-09-24 00:00:00.000000', 0, 'Spiele mitbringen', 1);
+insert into task (id, description, due_date, status, title, event_id) values (8, 'Platz im Park finden', '2020-09-24 00:00:00.000000', 0, 'Platz organisieren', 1);
 
 insert into task_assignee (task_id, user_id) values (1, 1);
 insert into task_assignee (task_id, user_id) values (1, 2);
