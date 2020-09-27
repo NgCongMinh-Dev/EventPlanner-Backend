@@ -38,7 +38,7 @@ public class Task implements Identifiable {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "task_assignee",
             joinColumns = @JoinColumn(name = "task_id"),

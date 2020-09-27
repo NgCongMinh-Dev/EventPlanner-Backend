@@ -30,4 +30,9 @@ public class UserBusiness {
                 .orElseThrow(() -> new InvalidArgumentException("Invalid username."));
     }
 
+    public User getUser(Long id) throws InvalidIdException {
+        return repository.findById(id)
+                .orElseThrow(() -> new InvalidIdException("Invalid user id."));
+    }
+
 }

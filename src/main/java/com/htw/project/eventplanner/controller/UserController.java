@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
     private UserBusiness business;
+
+    @Autowired
+    public UserController(UserBusiness userBusiness) {
+        this.business = userBusiness;
+    }
 
     @PostMapping(
             path = "/join",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addUser(@RequestParam("groupChat") Long gcId, @NonNull @RequestBody User user) throws InvalidIdException, InvalidArgumentException {
+    public ResponseEntity join(@RequestParam("groupChat") Long gcId, @NonNull @RequestBody User user) throws InvalidIdException, InvalidArgumentException {
         User dbUser = business.joinGroupConversation(gcId, user);
         return ResponseEntity.ok(dbUser);
     }

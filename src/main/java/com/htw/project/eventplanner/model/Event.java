@@ -1,6 +1,7 @@
 package com.htw.project.eventplanner.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Event implements Identifiable {
     @OneToMany(
             mappedBy = "event", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     @Override
     public Long getId() {

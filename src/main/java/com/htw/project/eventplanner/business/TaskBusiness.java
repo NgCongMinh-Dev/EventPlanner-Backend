@@ -27,6 +27,7 @@ public class TaskBusiness {
         oldTask.setDescription(newTask.getDescription());
         oldTask.setAssignees(newTask.getAssignees());
         oldTask.setDueDate(newTask.getDueDate());
+        oldTask.setStatus(newTask.getStatus());
 
         return taskRepository.save(oldTask);
     }

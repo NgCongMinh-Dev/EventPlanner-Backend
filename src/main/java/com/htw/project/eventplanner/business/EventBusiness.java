@@ -7,6 +7,8 @@ import com.htw.project.eventplanner.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class EventBusiness {
 
@@ -27,6 +29,10 @@ public class EventBusiness {
     }
 
     public Event createEvent(Long gcId, Event event) throws InvalidIdException {
+        if (event.getTasks() == null) {
+            event.setTasks(new ArrayList<>());
+        }
+
         GroupConversation gc = gcBusiness.getById(gcId);
         Event dbEvent = eventRepository.save(event);
 

@@ -55,14 +55,10 @@ public class TaskController {
 
     @PatchMapping(
             path = "/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity updateTaskStatus(@PathVariable("id") Long id, @RequestParam Task.Status status) throws InvalidIdException {
         Task task = business.getTaskById(id);
-        if (id != task.getId()) {
-            throw new InvalidIdException("Invalid task id.");
-        }
         task.setStatus(status);
 
         Task updatedTask = business.saveTask(task);
